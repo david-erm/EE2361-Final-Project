@@ -1,6 +1,7 @@
 .generated_files
 **/nbproject/private/
 **/nbproject/Makefile-*.mk
+**/nbproject/Makefile-*.properties
 **/nbproject/Package-*.mk
 
 **/build/
