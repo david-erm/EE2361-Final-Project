@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>display.h</itemPath>
       <itemPath>delay.h</itemPath>
+      <itemPath>ps2_interface_lib.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -22,6 +23,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>display.c</itemPath>
       <itemPath>delay.s</itemPath>
+      <itemPath>ps2_interface_lib.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
