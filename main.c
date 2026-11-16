@@ -29,11 +29,15 @@ void setup(void) {
     display_init();
 }
 
+uint16_t colors[3] = {0xF800, 0x07E0, 0x001F};
+
 int main(void) {
     setup();
 
+    int count = 0;
     while(1){
-        display_clear(0xF800);
+        display_clear(colors[count]);
+        count = (count + 1) % 3;
     };
     return 0;
 }

@@ -22,12 +22,11 @@ void display_pin_config(void) {
     __builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
     RPOR1bits.RP2R = 10; // RP2 = SDO2 
     RPOR1bits.RP3R = 11; // RP3 = SCK2OUT
-    RPINR22bits.SCK2R = 3;
     __builtin_write_OSCCONL(OSCCON | 0x40); // lock   PPS
     
     SPI2CON1 = 0;
-    SPI2CON1bits.MSTEN = 1;  // master mode
-    SPI2CON1bits.MODE16 = 0; // byte mode
+    SPI2CON1bits.MSTEN = 1;
+    SPI2CON1bits.MODE16 = 0;
     SPI2CON1bits.CKE = 1;
     SPI2CON1bits.CKP = 0;
 
@@ -35,10 +34,11 @@ void display_pin_config(void) {
     SPI2CON1bits.PPRE = 0b11;
 
     SPI2CON2 = 0;
+    SPI2CON2bits.SPIBEN = 1;
+
     SPI2STAT = 0;
-    SPI2STATbits.SISEL = 0b101; // IF set when last bit is shifted out
-                                // That means the SPI xfer is complete.
-    SPI2STATbits.SPIEN = 1; //enable
+    SPI2STATbits.SISEL = 0b101;    
+    SPI2STATbits.SPIEN = 1;
 
     _SPI2IF = 0;
 }
@@ -183,19 +183,24 @@ void display_clear(uint16_t color) {
     CS = 0;
     DC = 1;
 
+    SPI2STATbits.SPIEN = 0;
+    SPI2CON1bits.MODE16 = 1;
+    SPI2STATbits.SPIEN = 1;
+
     for (int i = 0; i < 320; i++) {
         for (int j = 0; j < 240; j++) {
-            SPI2BUF = color>>8;
-            while(!_SPI2IF);
-            _SPI2IF = 0;
-            int temp = SPI2BUF; (void)temp;
-
-            SPI2BUF = color & 0xff;
-            while(!_SPI2IF);
-            _SPI2IF = 0;
-            temp = SPI2BUF; (void)temp;
+            SPI2BUF = color;
+            while(SPI2STATbits.SPIBEC == 7);
         }
     }
+
+    while(!_SPI2IF);
+    _SPI2IF = 0;
+    
+
+    SPI2STATbits.SPIEN = 0;
+    SPI2CON1bits.MODE16 = 0;
+    SPI2STATbits.SPIEN = 1;
 
     CS = 1;
 }
