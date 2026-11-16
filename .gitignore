@@ -3,6 +3,7 @@
 **/nbproject/Makefile-*.mk
 **/nbproject/Makefile-*.properties
 **/nbproject/Package-*.mk
+debug
 
 **/build/
 **/dist/
